@@ -1,0 +1,44 @@
+{
+  "version": 2,
+  "functions": {
+    "backend/api/**/*.ts": {
+      "runtime": "nodejs18.x",
+      "memory": 512,
+      "maxDuration": 10
+    }
+  },
+  "builds": [
+    {
+      "src": "frontend/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
+    },
+    {
+      "src": "backend/api/**/*.ts",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "backend/api/$1.ts"
+    },
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/.*",
+      "dest": "frontend/dist/index.html"
+    }
+  ],
+  "installCommand": "npm install",
+  "buildCommand": "npm run build",
+  "env": {
+    "DATABASE_URL": "@database-url",
+    "OPENAI_API_KEY": "@openai-api-key",
+    "OPENAI_MODEL": "@openai-model",
+    "NODE_ENV": "production"
+  }
+}
