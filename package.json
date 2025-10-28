@@ -1,0 +1,17 @@
+{
+  "name": "ecomai-sentinel",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Backend utilities and API handlers for EcomAI Sentinel.",
+  "scripts": {
+    "start": "node api/queries/index.js",
+    "lint": "eslint .",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.18.0"
+  },
+  "devDependencies": {
+  }
+}
