@@ -1,3 +1,10 @@
+node_modules/
+.env
+.env.*
+dist/
+build/
+coverage/
+.DS_Store
 # Dependencies
 /node_modules
 
