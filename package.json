@@ -1,0 +1,14 @@
+{
+  "name": "project-monorepo",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "build": "echo \"TODO: Implement workspace build pipeline\"",
+    "dev": "echo \"TODO: Implement aggregated dev command\"",
+    "test": "echo \"TODO: Implement workspace test runner\""
+  }
+}
