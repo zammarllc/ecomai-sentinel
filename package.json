@@ -2,6 +2,9 @@
   "name": "fullstack-vercel-project",
   "private": true,
   "version": "0.1.0",
+  "name": "project-monorepo",
+  "version": "0.1.0",
+  "private": true,
   "workspaces": [
     "frontend",
     "backend"
@@ -14,5 +17,9 @@
     "build": "npm run build --workspace backend && npm run build --workspace frontend",
     "lint": "npm run lint --workspace backend && npm run lint --workspace frontend",
     "generate": "npm run generate --workspace backend"
+  "scripts": {
+    "build": "echo \"TODO: Implement workspace build pipeline\"",
+    "dev": "echo \"TODO: Implement aggregated dev command\"",
+    "test": "echo \"TODO: Implement workspace test runner\""
   }
 }
