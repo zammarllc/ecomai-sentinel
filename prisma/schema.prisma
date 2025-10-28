@@ -1,0 +1,32 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model CustomerQuery {
+  id            Int      @id @default(autoincrement())
+  userId        String
+  question      String
+  answer        String
+  tag           String?
+  privacyNotice String
+  model         String
+  metadata      Json?
+  createdAt     DateTime @default(now())
+}
+
+model Forecast {
+  id            Int      @id @default(autoincrement())
+  userId        String
+  inputData     Json
+  summary       String
+  highlights    Json
+  alerts        Json?
+  privacyNotice String
+  model         String
+  createdAt     DateTime @default(now())
+}
