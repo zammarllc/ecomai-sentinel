@@ -7,12 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  name      String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 enum Tier {
   FREE
   PRO
@@ -32,8 +26,8 @@ model User {
 
 model Query {
   id         String     @id @default(uuid())
-  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     String
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   prompt     String
   variables  Json
   result     Json
@@ -46,8 +40,8 @@ model Query {
 
 model Forecast {
   id          String   @id @default(uuid())
-  query       Query    @relation(fields: [queryId], references: [id], onDelete: Cascade)
   queryId     String
+  query       Query    @relation(fields: [queryId], references: [id], onDelete: Cascade)
   summary     String
   projections Json
   createdAt   DateTime @default(now())
