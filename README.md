@@ -1,39 +1,68 @@
-# Project Monorepo
+# Backend Data Layer
 
-## Overview
+This repository contains the backend data layer powered by Prisma and PostgreSQL. The project uses [Neon](https://neon.tech/) for managed Postgres in development and production environments.
 
-This repository is the starting point for a full-stack monorepo that will eventually host the web frontend, backend APIs, and shared utilities. The current scaffold establishes a consistent directory structure, shared tooling configuration, and documentation so that future contributions can focus on feature development.
+## Prerequisites
+
+- Node.js (version 18 or newer is recommended)
+- npm
+- A Neon (or compatible Postgres) connection string available as `DATABASE_URL`
 
 ## Getting Started
 
-1. **Install Dependencies**
-   - TODO: Document dependency installation once package manifests are finalized.
-2. **Run Development Servers**
-   - TODO: Provide commands for running the frontend and backend workspaces.
-3. **Generate Builds**
-   - TODO: Outline the build process for all workspaces.
+1. Install dependencies:
+
+   ```bash
+   cd backend
+   npm install
+   ```
+
+2. Configure your environment:
+
+   ```bash
+   cp .env.example .env
+   # Update DATABASE_URL with your Neon connection string
+   ```
+
+   A typical Neon connection string looks like:
+
+   ```
+   postgresql://<user>:<password>@<host>/<database>?sslmode=require
+   ```
+
+3. Run database migrations:
+
+   ```bash
+   npx prisma migrate dev
+   ```
+
+   This will generate the Prisma client and synchronise your database schema.
+
+4. Seed the database with sample data:
+
+   ```bash
+   npm run prisma:seed
+   ```
+
+   The seed script inserts example users, queries, and forecasts to aid local development and testing.
+
+## Prisma Tooling
+
+The `backend/package.json` exposes the following convenience scripts:
+
+- `npm run prisma:generate` – Generate the Prisma client based on the current schema.
+- `npm run prisma:migrate` – Apply development migrations using `prisma migrate dev`.
+- `npm run prisma:seed` – Execute the Prisma seed script (`prisma/seed.js`).
 
 ## Project Structure
 
 ```
-frontend/   # Web client workspace (TODO: initialize framework)
-backend/    # API server workspace (TODO: add server implementation)
-shared/     # Shared code and utilities reused across workspaces
+backend/
+  prisma/
+    schema.prisma     # Prisma schema definition
+    seed.js           # Seed script with sample data
+  prismaClient.js     # Shared Prisma client singleton
+  package.json        # Backend dependencies and scripts
 ```
 
-## Workspace Management
-
-- The root `package.json` configures npm workspaces for `frontend` and `backend`.
-- TODO: Add scripts for linting, formatting, and testing across workspaces once tools are selected.
-
-## Environment Configuration
-
-- Copy `.env.example` to `.env` and fill in the required values before running any services.
-- TODO: Expand environment variable documentation with service-specific requirements.
-
-## Roadmap & TODOs
-
-- TODO: Initialize the frontend framework (e.g., React, Next.js, Vite, etc.).
-- TODO: Scaffold the backend service with routing, database integration, and auth.
-- TODO: Add automated testing, linting, and formatting workflows.
-- TODO: Expand shared utilities with reusable modules and publish strategy.
+With the environment variables set correctly, running `npx prisma migrate dev` followed by `npm run prisma:seed` will provision the database schema and populate it with demo data.
