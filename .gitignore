@@ -1,4 +1,12 @@
 # Dependencies
+/node_modules
+
+# Environment
+.env
+.env.local
+.env.*
+
+# Logs
 node_modules/
 
 # Node dependencies
@@ -76,6 +84,19 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
+# Prisma
+/prisma/*.db
+/prisma/migrations/
+prisma/dev.db
+
+# Coverage / build output
+coverage
+/build
+/dist
+
+# OS files
+.DS_Store
+Thumbs.db
 # OS
 .DS_Store
 Thumbs.db
