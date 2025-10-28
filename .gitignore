@@ -1,6 +1,45 @@
 # Dependencies
 node_modules/
 
+# Node dependencies
+node_modules/
+
+# Dependencies
+node_modules/
+
+# Prisma
+/backend/prisma/*.db
+/backend/prisma/migrations/
+
+# Environment variables
+.env
+backend/.env
+backend/.env.local
+backend/.env.*
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor directories and files
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.DS_Store
+
+# Build outputs
+frontend/dist/
+backend/dist/
+
+# TypeScript build info
+**/*.tsbuildinfo
+
 # Environment files
 .env
 .env.local
@@ -15,6 +54,23 @@ prisma/*.db
 prisma/dev.db
 
 # Logs
+.env.production
+.env.test
+!.env.example
+frontend/.env
+frontend/.env.*
+backend/.env
+backend/.env.*
+
+# Prisma
+backend/prisma/dev.db
+backend/prisma/dev.db-journal
+
+# Vercel
+.vercel/
+# Node.js
+node_modules/
+**/node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -26,3 +82,33 @@ Thumbs.db
 
 # Coverage
 coverage/
+# Build outputs
+build/
+dist/
+.temp/
+.tmp/
+.cache/
+**/build/
+**/dist/
+**/.vite/
+
+# Vite
+.vite/
+**/.svelte-kit/
+*.tsbuildinfo
+
+# Prisma
+prisma/migrations/
+prisma/dev.db
+prisma/dev.db-journal
+.prisma/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Misc
+.DS_Store
+.idea/
+.vscode/
