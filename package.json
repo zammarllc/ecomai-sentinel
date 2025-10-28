@@ -2,14 +2,40 @@
   "name": "ecomai-sentinel",
   "version": "0.1.0",
   "private": true,
-  "workspaces": ["frontend", "backend"],
+  "description": "Fullstack AI-assisted e-commerce automation SaaS (query resolver + inventory forecaster).",
+  "type": "module",
+  "workspaces": [
+    "frontend",
+    "backend",
+    "auth-service",
+    "ai-analytics-service"
+  ],
   "scripts": {
-    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
-    "dev:backend": "cd backend && npm run dev",
-    "dev:frontend": "cd frontend && npm run dev",
-    "postinstall": "cd backend && npx prisma generate"
+    "start": "concurrently \"npm run start --workspace backend\" \"npm run start --workspace frontend\"",
+    "dev": "concurrently \"npm run dev --workspace backend\" \"npm run dev --workspace frontend\"",
+    "build": "npm run build --workspace backend && npm run build --workspace frontend",
+    "lint": "npm run lint --workspace backend && npm run lint --workspace frontend",
+    "postinstall": "npm run prisma:generate --workspace backend",
+    "test": "echo \"TODO: Add monorepo test runner\""
+  },
+  "dependencies": {
+    "@prisma/client": "^5.20.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "openai": "^4.60.0",
+    "zod": "^3.23.8",
+    "bcrypt": "^5.1.1",
+    "jsonwebtoken": "^9.0.2"
   },
   "devDependencies": {
-    "concurrently": "^8.2.2"
-  }
+    "concurrently": "^8.2.2",
+    "eslint": "^9.10.0",
+    "nodemon": "^3.1.4",
+    "prisma": "^5.20.0"
+  },
+  "engines": {
+    "node": ">=18.18.0"
+  },
+  "author": "",
+  "license": "MIT"
 }
