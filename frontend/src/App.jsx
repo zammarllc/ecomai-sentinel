@@ -1,48 +1,77 @@
+import { useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
-import DashboardPage from './pages/DashboardPage.jsx';
-import Login from './pages/Login.jsx';
-import Register from './pages/Register.jsx';
-import { useAuth } from './hooks/useAuth.js';
-
-function ProtectedRoute({ children }) {
-  const { token, initializing } = useAuth();
-  const location = useLocation();
-
-  if (initializing) {
-    return (
-      <div className="app-content" style={{ justifyContent: 'center', alignItems: 'center' }}>
-        <div className="loading-state">
-          <span className="loading-dot" />
-          <span className="loading-dot" />
-          <span className="loading-dot" />
-          <span>Securing your workspace…</span>
-        </div>
-      </div>
-    );
-  }
-
-  if (!token) {
-    return <Navigate to="/login" replace state={{ from: location }} />;
-  }
-
-  return children;
-}
+import LandingPage from './pages/LandingPage.jsx';
+import Dashboard from './pages/Dashboard.jsx';
+import ProtectedRoute from './components/ProtectedRoute.jsx';
+import LoginModal from './components/LoginModal.jsx';
+import { isAuthenticated } from './utils/auth.js';
 
 function App() {
+  const location = useLocation();
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [authSnapshot, setAuthSnapshot] = useState(() => isAuthenticated());
+
+  useEffect(() => {
+    setAuthSnapshot(isAuthenticated());
+  }, [location.key]);
+
+  useEffect(() => {
+    if (location.pathname !== '/') {
+      setIsLoginOpen(false);
+    }
+  }, [location.pathname]);
+
+  useEffect(() => {
+    if (location.pathname === '/' && location.state?.from && !isAuthenticated()) {
+      setIsLoginOpen(true);
+    }
+  }, [location]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return undefined;
+    }
+
+    const handleStorage = () => {
+      setAuthSnapshot(isAuthenticated());
+    };
+
+    window.addEventListener('storage', handleStorage);
+    return () => window.removeEventListener('storage', handleStorage);
+  }, []);
+
+  const handleOpenLogin = () => {
+    setIsLoginOpen(true);
+  };
+
+  const handleCloseLogin = () => {
+    setIsLoginOpen(false);
+  };
+
+  const handleLoginSuccess = () => {
+    setAuthSnapshot(true);
+    setIsLoginOpen(false);
+  };
+
   return (
-    <Routes>
-      <Route
-        path="/"
-        element={
-          <ProtectedRoute>
-            <DashboardPage />
-          </ProtectedRoute>
-        }
-      />
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
+    <>
+      <Routes>
+        <Route
+          path="/"
+          element={<LandingPage onLoginClick={handleOpenLogin} isAuthenticated={authSnapshot} />}
+        />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+      <LoginModal isOpen={isLoginOpen} onClose={handleCloseLogin} onSuccess={handleLoginSuccess} />
+    </>
   );
 }
 
