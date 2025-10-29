@@ -14,10 +14,11 @@
     "generate": "prisma generate",
     "migrate": "prisma migrate dev",
     "migrate:deploy": "prisma migrate deploy",
-    "prisma:seed": "node prisma/seed.js"
+    "prisma:seed": "node prisma/seed.mjs",
+    "seed": "node prisma/seed.mjs"
   },
   "prisma": {
-    "seed": "node prisma/seed.js"
+    "seed": "node prisma/seed.mjs"
   },
   "dependencies": {
     "@prisma/client": "^5.18.0",
