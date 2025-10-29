@@ -7,45 +7,67 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Tier {
-  FREE
-  PRO
-  ENTERPRISE
-}
-
 model User {
-  id           String   @id @default(uuid())
+  id           String   @id @default(cuid())
   email        String   @unique
-  name         String
   passwordHash String
-  tier         Tier     @default(FREE)
-  queries      Query[]
+  tier         String   @default("free")
+  stores       Store[]
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
 
-model Query {
-  id         String     @id @default(uuid())
-  userId     String
-  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  prompt     String
-  variables  Json
-  result     Json
-  forecasts  Forecast[]
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
+model Store {
+  id              String           @id @default(cuid())
+  name            String
+  platform        String
+  userId          String
+  user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  inventoryItems  InventoryItem[]
+  customerQueries CustomerQuery[]
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
 
   @@index([userId])
 }
 
-model Forecast {
-  id          String   @id @default(uuid())
-  queryId     String
-  query       Query    @relation(fields: [queryId], references: [id], onDelete: Cascade)
-  summary     String
-  projections Json
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+model InventoryItem {
+  id            String        @id @default(cuid())
+  productName   String
+  sku           String        @unique
+  currentStock  Int
+  storeId       String
+  store         Store         @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  forecastLogs  ForecastLog[]
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
 
-  @@index([queryId])
+  @@index([storeId])
+}
+
+model CustomerQuery {
+  id           String   @id @default(cuid())
+  queryText    String
+  aiResponse   String?
+  customerEmail String
+  status       String   @default("open")
+  stockRelated Boolean  @default(false)
+  storeId      String
+  store        Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([storeId])
+}
+
+model ForecastLog {
+  id             String        @id @default(cuid())
+  itemId         String
+  item           InventoryItem @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  predictedDemand Int
+  reasoning      String
+  alertLevel     String        @default("normal")
+  createdAt      DateTime      @default(now())
+
+  @@index([itemId])
 }
